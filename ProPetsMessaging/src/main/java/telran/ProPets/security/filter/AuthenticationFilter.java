@@ -42,7 +42,7 @@ public class AuthenticationFilter implements Filter{
 			RestTemplate restTemplate = new RestTemplate();	
 			ResponseEntity<String> restResponse = null;
 			try {
-				RequestEntity<String> restRequest = new RequestEntity<>(headers, HttpMethod.GET, new URI("http://localhost:8080/en/account/v1/token/validation"));				
+				RequestEntity<String> restRequest = new RequestEntity<>(headers, HttpMethod.GET, new URI("https://propetsapp.herokuapp.com/account/en/v1/token/validation"));				
 				restResponse = restTemplate.exchange(restRequest, String.class);				
 			} catch (URISyntaxException e) {
 				response.sendError(400, "Bad request");

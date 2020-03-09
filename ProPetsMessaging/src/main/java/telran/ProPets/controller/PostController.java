@@ -18,7 +18,7 @@ import telran.ProPets.dto.PostResponseDto;
 import telran.ProPets.service.PostService;
 
 @RestController
-@RequestMapping("/{lang}/message/v1")
+@RequestMapping("/message/{lang}/v1")
 public class PostController {
 	
 	@Autowired
