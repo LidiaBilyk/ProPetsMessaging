@@ -1,5 +1,7 @@
 package telran.ProPets.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +27,8 @@ public class PostController {
 	PostService postService;
 	
 	@PostMapping("/{login:.*}")
-	public PostResponseDto post(@PathVariable String login, @RequestBody PostDto postDto, @RequestHeader(value = "X-token") String token) {
-		return postService.post(login, postDto);
+	public PostResponseDto post(Principal principal, @RequestBody PostDto postDto, @RequestHeader(value = "X-token") String token) {
+		return postService.post(principal.getName(), postDto);
 	}
 
 	@GetMapping("/{id:.*}")
