@@ -27,6 +27,7 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public PostResponseDto post(Principal principal, String login, PostDto postDto) {
+		System.out.println(principal.getName());
 		if (!principal.getName().equals(login)) {
 			throw new ForbiddenException();
 		}
