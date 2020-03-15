@@ -61,11 +61,11 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostResponseDto updatePost(Principal principal, String id, PostResponseDto postResponceDto) {
-		if (!principal.getName().equals(postResponceDto.getUserLogin())) {
+	public PostResponseDto updatePost(Principal principal, String id, PostResponseDto postResponceDto) {	
+		Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException());
+		if (!principal.getName().equals(post.getUserLogin())) {
 			throw new ForbiddenException();
 		}
-		Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException());
 		if (postResponceDto.getImages() != null) {
 			post.setImages(postResponceDto.getImages());
 		}
