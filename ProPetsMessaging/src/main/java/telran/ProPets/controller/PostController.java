@@ -27,27 +27,27 @@ public class PostController {
 	PostService postService;
 	
 	@PostMapping("/{login:.*}")
-	public PostResponseDto post(Principal principal, @RequestBody PostDto postDto, @RequestHeader(value = "X-token") String token) {
-		return postService.post(principal.getName(), postDto);
+	public PostResponseDto post(Principal principal, @PathVariable String login, @RequestBody PostDto postDto, @RequestHeader("X-token") String token) {
+		return postService.post(principal, login, postDto);
 	}
 
 	@GetMapping("/{id:.*}")
-	public PostResponseDto getPostById(@PathVariable String id, @RequestHeader(value = "X-token") String token) {
+	public PostResponseDto getPostById(@PathVariable String id, @RequestHeader("X-token") String token) {
 		return postService.getPostById(id);
 	}
 	
 	@PutMapping("/{id:.*}")
-	public PostResponseDto updatePost(@PathVariable String id, @RequestBody PostResponseDto postDto, @RequestHeader(value = "X-token") String token) {
-		return postService.updatePost(id, postDto);
+	public PostResponseDto updatePost(Principal principal, @PathVariable String id, @RequestBody PostResponseDto postDto, @RequestHeader("X-token") String token) {
+		return postService.updatePost(principal, id, postDto);
 	}
 	
 	@DeleteMapping("/{id:.*}")
-	public PostResponseDto deletePost(@PathVariable String id, @RequestHeader(value = "X-token") String token) {
-		return postService.deletePost(id);
+	public PostResponseDto deletePost(Principal principal, @PathVariable String id, @RequestHeader("X-token") String token) {
+		return postService.deletePost(principal, id);
 	}
 	
 	@GetMapping("/view")
-	public PageDto getPosts(@RequestParam Integer itemsOnPage, @RequestParam Integer currentPage, @RequestHeader(value = "X-token") String token) {
+	public PageDto getPosts(@RequestParam Integer itemsOnPage, @RequestParam Integer currentPage, @RequestHeader("X-token") String token) {
 		return postService.getPosts(itemsOnPage, currentPage);
 	}
 }

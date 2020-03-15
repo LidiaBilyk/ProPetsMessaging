@@ -1,5 +1,6 @@
 package telran.ProPets.service;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,7 @@ import telran.ProPets.dao.PostRepository;
 import telran.ProPets.dto.PageDto;
 import telran.ProPets.dto.PostDto;
 import telran.ProPets.dto.PostResponseDto;
+import telran.ProPets.exceptions.ForbiddenException;
 import telran.ProPets.exceptions.NotFoundException;
 import telran.ProPets.model.Post;
 
@@ -24,7 +26,10 @@ public class PostServiceImpl implements PostService {
 	PostRepository postRepository;
 
 	@Override
-	public PostResponseDto post(String login, PostDto postDto) {
+	public PostResponseDto post(Principal principal, String login, PostDto postDto) {
+		if (!principal.getName().equals(login)) {
+			throw new ForbiddenException();
+		}
 		Post post = Post.builder()
 				.userLogin(login)
 				.datePost(LocalDateTime.now())
@@ -55,7 +60,10 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostResponseDto updatePost(String id, PostResponseDto postResponceDto) {
+	public PostResponseDto updatePost(Principal principal, String id, PostResponseDto postResponceDto) {
+		if (!principal.getName().equals(postResponceDto.getUserLogin())) {
+			throw new ForbiddenException();
+		}
 		Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException());
 		if (postResponceDto.getImages() != null) {
 			post.setImages(postResponceDto.getImages());
@@ -69,8 +77,11 @@ public class PostServiceImpl implements PostService {
 
 	@Transactional
 	@Override		
-	public PostResponseDto deletePost(String id) {
+	public PostResponseDto deletePost(Principal principal, String id) {
 		Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException());
+		if (!principal.getName().equals(post.getUserLogin())) {
+			throw new ForbiddenException();
+		}
 		PostResponseDto postResponceDto = postToPostResponceDto(post);
 		postRepository.deleteById(id);
 		return postResponceDto;
