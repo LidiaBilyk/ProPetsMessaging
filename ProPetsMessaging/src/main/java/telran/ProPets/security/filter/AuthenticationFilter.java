@@ -35,8 +35,7 @@ public class AuthenticationFilter implements Filter{
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 		String path = request.getServletPath();
-		if (!path.startsWith("/h2")) {
-			System.out.println("messaging");
+					
 			String auth = request.getHeader("X-Token");
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("X-Token", auth);
@@ -48,8 +47,7 @@ public class AuthenticationFilter implements Filter{
 			} catch (URISyntaxException e) {
 				response.sendError(400, "Bad request");
 			}catch (HttpClientErrorException e) {				
-				if (e.getStatusCode() != HttpStatus.OK) {	
-					System.out.println("mess err");
+				if (e.getStatusCode() != HttpStatus.OK) {					
 					response.sendError(401, "Header Authorization is not valid");
 					return;
 				}
@@ -64,9 +62,7 @@ public class AuthenticationFilter implements Filter{
 			response.addHeader("X-Login", login);
 			
 			chain.doFilter(new WrapperRequest(request, login), response);
-			return;
-		}
-		chain.doFilter(request, response);
+		
 	}
 
 	private class WrapperRequest extends HttpServletRequestWrapper {

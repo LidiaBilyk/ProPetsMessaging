@@ -35,8 +35,7 @@ public class PostServiceImpl implements PostService {
 				.datePost(LocalDateTime.now())
 				.text(postDto.getText())
 				.images(postDto.getImages())
-				.build();
-		post.setId(LocalDateTime.now().toString());
+				.build();		
 		postRepository.save(post);
 
 		return postToPostResponceDto(post);
@@ -53,8 +52,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostResponseDto getPostById(String id) {
-		System.out.println("get post");
+	public PostResponseDto getPostById(String id) {		
 		Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException());		
 		return postToPostResponceDto(post);
 	}
@@ -75,7 +73,7 @@ public class PostServiceImpl implements PostService {
 		return postToPostResponceDto(post);
 	}
 
-	@Transactional
+	
 	@Override		
 	public PostResponseDto deletePost(Principal principal, String id) {
 		Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException());

@@ -5,12 +5,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
+//import javax.persistence.ElementCollection;
+//import javax.persistence.Entity;
+//import javax.persistence.FetchType;
+//import javax.persistence.Id;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,19 +26,21 @@ import lombok.Singular;
 @Setter
 @Builder
 @EqualsAndHashCode(of = { "id" })
-@Entity
+//@Entity
+@Document(collection = "messages")
 public class Post implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@Id
+	
 	String id;
 	String userLogin;
 	String text;
 	LocalDateTime datePost;
-	@ElementCollection(fetch = FetchType.EAGER)
+//	@ElementCollection(fetch = FetchType.EAGER)
+	@Singular
 	List<String> images;
 
 }
