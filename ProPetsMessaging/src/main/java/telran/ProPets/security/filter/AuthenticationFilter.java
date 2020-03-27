@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 @Service
+@Order(10)
 public class AuthenticationFilter implements Filter{
 
 	@Override
@@ -35,6 +37,7 @@ public class AuthenticationFilter implements Filter{
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 		String path = request.getServletPath();
+		String method = request.getMethod();
 					
 			String auth = request.getHeader("X-Token");
 			HttpHeaders headers = new HttpHeaders();
@@ -56,6 +59,7 @@ public class AuthenticationFilter implements Filter{
 			String userName = restResponse.getHeaders().getFirst("X-UserName");	
 			String avatar = restResponse.getHeaders().getFirst("X-Avatar");
 			String login = restResponse.getHeaders().getFirst("X-Login");
+		
 			response.addHeader("X-Token", jwt);			
 			response.addHeader("X-UserName", userName);
 			response.addHeader("X-Avatar", avatar);
@@ -65,6 +69,7 @@ public class AuthenticationFilter implements Filter{
 		
 	}
 
+	
 	private class WrapperRequest extends HttpServletRequestWrapper {
 
 		String user;

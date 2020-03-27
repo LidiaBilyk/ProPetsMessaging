@@ -1,7 +1,5 @@
 package telran.ProPets.controller;
 
-import java.security.Principal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +25,8 @@ public class PostController {
 	PostService postService;
 	
 	@PostMapping("/{login:.*}")
-	public PostResponseDto post(Principal principal, @PathVariable String login, @RequestBody PostDto postDto, @RequestHeader("X-token") String token) {
-		return postService.post(principal, login, postDto);
+	public PostResponseDto post(@PathVariable String login, @RequestBody PostDto postDto, @RequestHeader("X-token") String token) {
+		return postService.post(login, postDto);
 	}
 
 	@GetMapping("/{id:.*}")
@@ -37,13 +35,13 @@ public class PostController {
 	}
 	
 	@PutMapping("/{id:.*}")
-	public PostResponseDto updatePost(Principal principal, @PathVariable String id, @RequestBody PostResponseDto postDto, @RequestHeader("X-token") String token) {
-		return postService.updatePost(principal, id, postDto);
+	public PostResponseDto updatePost(@PathVariable String id, @RequestBody PostResponseDto postDto, @RequestHeader("X-token") String token) {
+		return postService.updatePost(id, postDto);
 	}
 	
 	@DeleteMapping("/{id:.*}")
-	public PostResponseDto deletePost(Principal principal, @PathVariable String id, @RequestHeader("X-token") String token) {
-		return postService.deletePost(principal, id);
+	public PostResponseDto deletePost(@PathVariable String id, @RequestHeader("X-token") String token) {
+		return postService.deletePost(id);
 	}
 	
 	@GetMapping("/view")

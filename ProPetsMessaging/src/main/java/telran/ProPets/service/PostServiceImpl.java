@@ -26,10 +26,8 @@ public class PostServiceImpl implements PostService {
 	PostRepository postRepository;
 
 	@Override
-	public PostResponseDto post(Principal principal, String login, PostDto postDto) {		
-		if (!principal.getName().equals(login)) {
-			throw new ForbiddenException();
-		}
+	public PostResponseDto post(String login, PostDto postDto) {		
+		
 		Post post = Post.builder()
 				.userLogin(login)
 				.datePost(LocalDateTime.now())
@@ -58,11 +56,8 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostResponseDto updatePost(Principal principal, String id, PostResponseDto postResponceDto) {	
-		Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException());
-		if (!principal.getName().equals(post.getUserLogin())) {
-			throw new ForbiddenException();
-		}
+	public PostResponseDto updatePost(String id, PostResponseDto postResponceDto) {	
+		Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException());		
 		if (postResponceDto.getImages() != null) {
 			post.setImages(postResponceDto.getImages());
 		}
@@ -75,11 +70,8 @@ public class PostServiceImpl implements PostService {
 
 	
 	@Override		
-	public PostResponseDto deletePost(Principal principal, String id) {
-		Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException());
-		if (!principal.getName().equals(post.getUserLogin())) {
-			throw new ForbiddenException();
-		}
+	public PostResponseDto deletePost(String id) {
+		Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException());		
 		PostResponseDto postResponceDto = postToPostResponceDto(post);
 		postRepository.deleteById(id);
 		return postResponceDto;
