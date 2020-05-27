@@ -6,7 +6,7 @@ import telran.ProPets.dto.PostResponseDto;
 
 
 public interface PostService {
-	PostResponseDto post (String login, String username, String avatar, PostDto postDto);
+	PostResponseDto post (String login, PostDto postDto);
 	PostResponseDto getPostById(String id);
 	PostResponseDto updatePost(String id, PostResponseDto postDto);
 	PostResponseDto deletePost(String id);

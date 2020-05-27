@@ -8,6 +8,8 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PostDto {
+    String username; 
+    String avatar;
 	String text;
 	List<String> images;
 

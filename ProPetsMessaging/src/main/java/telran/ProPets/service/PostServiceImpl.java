@@ -36,11 +36,11 @@ public class PostServiceImpl implements PostService {
 	MessagingConfiguration messagingConfiguration;
 
 	@Override
-	public PostResponseDto post(String login, String username, String avatar, PostDto postDto) {		
+	public PostResponseDto post(String login, PostDto postDto) {		
 		Post post = Post.builder()
 				.userLogin(login)
-				.username(username)
-				.avatar(avatar)
+				.username(postDto.getUsername())
+				.avatar(postDto.getAvatar())
 				.datePost(LocalDateTime.now())
 				.text(postDto.getText())
 				.images(postDto.getImages())

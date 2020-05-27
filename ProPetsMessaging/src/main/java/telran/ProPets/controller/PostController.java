@@ -25,9 +25,8 @@ public class PostController {
 	PostService postService;
 	
 	@PostMapping("/{login:.*}")
-	public PostResponseDto post(@PathVariable String login, @RequestHeader("X-Username")String username, @RequestHeader("X-Avatar")String avatar, 
-			@RequestBody PostDto postDto, @RequestHeader("X-token") String token) {
-		return postService.post(login, username, avatar, postDto);
+	public PostResponseDto post(@PathVariable String login, @RequestBody PostDto postDto, @RequestHeader("X-token") String token) {
+		return postService.post(login, postDto);
 	}
 
 	@GetMapping("/{id:.*}")
