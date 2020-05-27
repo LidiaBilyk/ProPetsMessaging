@@ -25,8 +25,9 @@ public class PostController {
 	PostService postService;
 	
 	@PostMapping("/{login:.*}")
-	public PostResponseDto post(@PathVariable String login, @RequestBody PostDto postDto, @RequestHeader("X-token") String token) {
-		return postService.post(login, postDto);
+	public PostResponseDto post(@PathVariable String login, @RequestHeader("X-Username")String username, @RequestHeader("X-Avatar")String avatar, 
+			@RequestBody PostDto postDto, @RequestHeader("X-token") String token) {
+		return postService.post(login, username, avatar, postDto);
 	}
 
 	@GetMapping("/{id:.*}")
@@ -47,5 +48,10 @@ public class PostController {
 	@GetMapping("/view")
 	public PageDto getPosts(@RequestParam Integer itemsOnPage, @RequestParam Integer currentPage, @RequestHeader("X-token") String token) {
 		return postService.getPosts(itemsOnPage, currentPage);
+	}
+	
+	@PutMapping("/complain/{id:.*}")
+	public void complainPost(@PathVariable String id) {
+		postService.complainPost(id);
 	}
 }

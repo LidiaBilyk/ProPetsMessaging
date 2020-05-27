@@ -5,11 +5,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-//import javax.persistence.ElementCollection;
-//import javax.persistence.Entity;
-//import javax.persistence.FetchType;
-//import javax.persistence.Id;
-
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -37,9 +32,10 @@ public class Post implements Serializable {
 	
 	String id;
 	String userLogin;
+    String username; 
+    String avatar;
 	String text;
 	LocalDateTime datePost;
-//	@ElementCollection(fetch = FetchType.EAGER)
 	@Singular
 	List<String> images;
 

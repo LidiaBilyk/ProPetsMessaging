@@ -53,8 +53,13 @@ public class CustomFilter implements Filter{
 		}
 		if (checkPointCutId(path, method)) {	
 			String pathId = templateId.match(request.getRequestURI()).get("id");			
-			if (!customSecurity.checkAuthorityForDeletePost(pathId, principal)) {
-				response.sendError(403, "Access denied");
+			try {
+				if (!customSecurity.checkAuthorityForDeletePost(pathId, principal)) {
+					response.sendError(403, "Access denied");
+					return;
+				}
+			} catch (Exception e) {
+				response.sendError(404, "Not found");
 				return;
 			}
 		}		

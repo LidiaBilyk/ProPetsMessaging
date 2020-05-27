@@ -13,6 +13,8 @@ import lombok.Singular;
 public class PostResponseDto {
 	String id;
 	String userLogin;
+    String username; 
+    String avatar;
 	LocalDateTime datePost;	
 	String text;
 	@Singular

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import telran.ProPets.dao.PostRepository;
+import telran.ProPets.exceptions.NotFoundException;
 import telran.ProPets.model.Post;
 
 @Component
@@ -19,11 +20,7 @@ public class CustomSecurity {
 	}
 	
 	public boolean checkAuthorityForDeletePost(String id, Principal principal) {
-		Post post = postRepository.findById(id).orElse(null);
-		if (post == null) {
-			return false;
-		}
+		Post post = postRepository.findById(id).orElseThrow(NotFoundException::new);		
 		return post.getUserLogin().equals(principal.getName());
 	}
-
 }

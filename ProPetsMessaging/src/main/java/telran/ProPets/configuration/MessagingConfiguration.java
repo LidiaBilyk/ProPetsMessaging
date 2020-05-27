@@ -16,5 +16,10 @@ public class MessagingConfiguration {
 	String templateLogin;
 	@Value("${templateId}")
 	String templateId;
-
+	@Value("${checkJwtUri}")
+	String checkJwtUri;
+	@Value("${complainUri}")
+	String complainUri;
+	@Value("${activityUri}")
+	String activityUri;
 }
