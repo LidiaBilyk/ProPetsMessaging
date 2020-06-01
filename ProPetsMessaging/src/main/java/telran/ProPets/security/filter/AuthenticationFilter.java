@@ -42,7 +42,9 @@ public class AuthenticationFilter implements Filter{
 			throws IOException, ServletException, RestClientException {			
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
-					
+		String path = request.getServletPath();
+		String method = request.getMethod();
+		if (!checkPointCut(path, method)) {			
 			String auth = request.getHeader("X-Token");
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("X-Token", auth);
@@ -61,10 +63,15 @@ public class AuthenticationFilter implements Filter{
 			}
 			String jwt = restResponse.getHeaders().getFirst("X-Token");				
 			String login = restResponse.getHeaders().getFirst("X-Login");		
-			response.addHeader("X-Token", jwt);
-			response.addHeader("X-Login", login);
-			
-			chain.doFilter(new WrapperRequest(request, login), response);		
+			response.addHeader("X-Token", jwt);			
+			chain.doFilter(new WrapperRequest(request, login), response);
+		}				
+		chain.doFilter(request, response);
+	}
+	
+	private boolean checkPointCut(String path, String method) {
+		boolean check = path.matches(".*/userdata");		
+		return check;
 	}
 	
 	private class WrapperRequest extends HttpServletRequestWrapper {

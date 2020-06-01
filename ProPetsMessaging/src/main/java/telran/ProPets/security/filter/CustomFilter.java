@@ -38,7 +38,7 @@ public class CustomFilter implements Filter{
 		HttpServletResponse response = (HttpServletResponse) resp;
 		String path = request.getServletPath();
 		String method = request.getMethod(); 		
-		
+		if (!checkPointCut(path, method)) {
 		UriTemplate templateLogin = new UriTemplate(messagingConfiguration.getTemplateLogin());	
 		UriTemplate templateId = new UriTemplate(messagingConfiguration.getTemplateId());			
 				
@@ -63,8 +63,15 @@ public class CustomFilter implements Filter{
 				return;
 			}
 		}		
-		chain.doFilter(new WrapperRequest(request, principal.getName()), response);		
+		chain.doFilter(new WrapperRequest(request, principal.getName()), response);	
+		}	
+		chain.doFilter(request, response);
 	}	
+	
+	private boolean checkPointCut(String path, String method) {
+		boolean check = path.matches(".*/userdata");		
+		return check;
+	}
 //	check updatePost & deletePost methods
 	private boolean checkPointCutId(String path, String method) {
 		boolean check = !(path.matches(".*/complain/.*") || path.matches(".*/hide/.*")) && "Put".equalsIgnoreCase(method);

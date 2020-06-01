@@ -3,6 +3,10 @@ package telran.ProPets.service;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,7 +150,16 @@ public class PostServiceImpl implements PostService {
 		} catch (URISyntaxException e) {			
 			throw new BadRequestException();
 		}		
-		
 	}
-
+	@Override
+	public Set<PostResponseDto> getPostsForUserData(Set<String> postId) {
+		Set<PostResponseDto> result = new HashSet<>();
+		for (String id : postId) {
+			Post post = postRepository.findById(id).orElse(null);
+			if (post != null) {
+				result.add(postToPostResponseDto(post));
+			}			
+		}			
+		return result;
+	}
 }

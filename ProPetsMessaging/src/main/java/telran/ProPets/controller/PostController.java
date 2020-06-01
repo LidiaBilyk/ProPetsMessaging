@@ -1,5 +1,7 @@
 package telran.ProPets.controller;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import telran.ProPets.dto.PageDto;
 import telran.ProPets.dto.PostDto;
 import telran.ProPets.dto.PostResponseDto;
@@ -52,5 +53,10 @@ public class PostController {
 	@PutMapping("/complain/{id:.*}")
 	public void complainPost(@PathVariable String id) {
 		postService.complainPost(id);
+	}
+	
+	@PostMapping("/userdata")
+	public Set<PostResponseDto> getPostsForUserData(@RequestBody Set<String> postId) {
+		return postService.getPostsForUserData(postId);
 	}
 }
