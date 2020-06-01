@@ -50,13 +50,18 @@ public class PostServiceImpl implements PostService {
 				.images(postDto.getImages())
 				.build();			
 		postRepository.save(post);
+		sendToActivities(post.getId(), post.getUserLogin(), HttpMethod.PUT);
+		return postToPostResponseDto(post);
+	}
+
+	private void sendToActivities(String id, String userLogin, HttpMethod method) {
 		RestTemplate restTemplate = new RestTemplate();	
 		String activityTemplate = "/activity/";
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("X-ServiceName", "message");
+		headers.add("X-ServiceName", messagingConfiguration.getApplicationName());
 		try {
-			RequestEntity<String> restRequest = new RequestEntity<>(headers, HttpMethod.PUT, 			
-					new URI(messagingConfiguration.getActivityUri().concat(login).concat(activityTemplate).concat(post.getId())));
+			RequestEntity<String> restRequest = new RequestEntity<>(headers, method, 			
+					new URI(messagingConfiguration.getActivityUri().concat(userLogin).concat(activityTemplate).concat(id)));
 			ResponseEntity<String>restResponse = restTemplate.exchange(restRequest, String.class);
 		} catch (RestClientException e) {
 			throw new ConflictException();
@@ -64,7 +69,7 @@ public class PostServiceImpl implements PostService {
 		catch (URISyntaxException e) {			
 			throw new BadRequestException();
 		}
-		return postToPostResponseDto(post);
+		
 	}
 
 	private PostResponseDto postToPostResponseDto(Post post) {		
@@ -103,20 +108,7 @@ public class PostServiceImpl implements PostService {
 		Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException());		
 		PostResponseDto postResponseDto = postToPostResponseDto(post);
 		postRepository.deleteById(id);
-		RestTemplate restTemplate = new RestTemplate();	
-		String activityTemplate = "/activity/";
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("X-ServiceName", "message");	
-		try {
-			RequestEntity<String> restRequest = new RequestEntity<>(headers, HttpMethod.DELETE, 
-					new URI(messagingConfiguration.getActivityUri().concat(post.getUserLogin()).concat(activityTemplate).concat(post.getId())));
-			ResponseEntity<String>restResponse = restTemplate.exchange(restRequest, String.class);
-		} catch (RestClientException e) {
-			throw new ConflictException();
-		} 
-		catch (URISyntaxException e) {			
-			throw new BadRequestException();
-		}
+		sendToActivities(post.getId(), post.getUserLogin(), HttpMethod.DELETE);
 		return postResponseDto;
 	}
 

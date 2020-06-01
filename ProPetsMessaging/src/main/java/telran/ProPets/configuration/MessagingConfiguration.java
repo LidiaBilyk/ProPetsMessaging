@@ -22,4 +22,6 @@ public class MessagingConfiguration {
 	String complainUri;
 	@Value("${activityUri}")
 	String activityUri;
+	 @Value("${spring.application.name}")
+	 String applicationName;
 }
