@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
 import telran.ProPets.configuration.MessagingConfiguration;
 
 
@@ -44,7 +43,7 @@ public class AuthenticationFilter implements Filter{
 		HttpServletResponse response = (HttpServletResponse) resp;
 		String path = request.getServletPath();
 		String method = request.getMethod();
-		if (!checkPointCut(path, method)) {			
+		if (!checkPointCut(path, method)) {	
 			String auth = request.getHeader("X-Token");
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("X-Token", auth);
@@ -55,16 +54,18 @@ public class AuthenticationFilter implements Filter{
 				restResponse = restTemplate.exchange(restRequest, String.class);				
 			} catch (URISyntaxException e) {
 				response.sendError(400, "Bad request");
+				return;
 			}catch (HttpClientErrorException e) {				
-				if (e.getStatusCode() != HttpStatus.OK) {					
+				if (e.getStatusCode() != HttpStatus.OK) {
 					response.sendError(401, "Header Authorization is not valid");
 					return;
 				}
 			}
 			String jwt = restResponse.getHeaders().getFirst("X-Token");				
 			String login = restResponse.getHeaders().getFirst("X-Login");		
-			response.addHeader("X-Token", jwt);			
+			response.addHeader("X-Token", jwt);
 			chain.doFilter(new WrapperRequest(request, login), response);
+			return;
 		}				
 		chain.doFilter(request, response);
 	}

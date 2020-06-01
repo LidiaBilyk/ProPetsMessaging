@@ -68,8 +68,7 @@ public class PostServiceImpl implements PostService {
 		} 
 		catch (URISyntaxException e) {			
 			throw new BadRequestException();
-		}
-		
+		}		
 	}
 
 	private PostResponseDto postToPostResponseDto(Post post) {		
