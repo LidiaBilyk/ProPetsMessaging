@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -144,13 +145,10 @@ public class PostServiceImpl implements PostService {
 	}
 	@Override
 	public Set<PostResponseDto> getPostsForUserData(Set<String> postId) {
-		Set<PostResponseDto> result = new HashSet<>();
-		for (String id : postId) {
-			Post post = postRepository.findById(id).orElse(null);
-			if (post != null) {
-				result.add(postToPostResponseDto(post));
-			}			
-		}			
+		Iterable<Post> res = postRepository.findAllById(postId);
+		Set<PostResponseDto> result = StreamSupport.stream(res.spliterator(), false)
+		.map(d -> postToPostResponseDto(d))		
+		.collect(Collectors.toSet());			
 		return result;
 	}
 }
