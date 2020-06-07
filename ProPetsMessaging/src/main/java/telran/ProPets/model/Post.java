@@ -21,7 +21,6 @@ import lombok.Singular;
 @Setter
 @Builder
 @EqualsAndHashCode(of = { "id" })
-//@Entity
 @Document(collection = "messages")
 public class Post implements Serializable {
 
@@ -38,5 +37,4 @@ public class Post implements Serializable {
 	LocalDateTime datePost;
 	@Singular
 	List<String> images;
-
 }
