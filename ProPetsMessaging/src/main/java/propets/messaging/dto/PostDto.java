@@ -1,4 +1,4 @@
-package telran.ProPets.dto;
+package propets.messaging.dto;
 
 import java.util.List;
 

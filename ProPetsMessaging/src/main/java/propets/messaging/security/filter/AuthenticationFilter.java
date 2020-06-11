@@ -1,4 +1,4 @@
-package telran.ProPets.security.filter;
+package propets.messaging.security.filter;
 
 import java.io.IOException;
 import java.net.URI;
@@ -26,7 +26,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import telran.ProPets.configuration.MessagingConfiguration;
+
+import propets.messaging.configuration.MessagingConfiguration;
 
 
 @Service

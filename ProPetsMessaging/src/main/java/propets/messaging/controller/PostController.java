@@ -1,4 +1,4 @@
-package telran.ProPets.controller;
+package propets.messaging.controller;
 
 import java.util.Set;
 
@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import telran.ProPets.dto.PageDto;
-import telran.ProPets.dto.PostDto;
-import telran.ProPets.dto.PostResponseDto;
-import telran.ProPets.service.PostService;
+
+import propets.messaging.dto.PageDto;
+import propets.messaging.dto.PostDto;
+import propets.messaging.dto.PostResponseDto;
+import propets.messaging.service.PostService;
 
 @RestController
 @RequestMapping("/{lang}/v1")

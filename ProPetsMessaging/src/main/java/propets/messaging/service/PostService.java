@@ -1,10 +1,10 @@
-package telran.ProPets.service;
+package propets.messaging.service;
 
 import java.util.Set;
 
-import telran.ProPets.dto.PageDto;
-import telran.ProPets.dto.PostDto;
-import telran.ProPets.dto.PostResponseDto;
+import propets.messaging.dto.PageDto;
+import propets.messaging.dto.PostDto;
+import propets.messaging.dto.PostResponseDto;
 
 
 public interface PostService {

@@ -1,4 +1,4 @@
-package telran.ProPets.model;
+package propets.messaging.model;
 
 import java.io.Serializable;
 

@@ -1,13 +1,13 @@
-package telran.ProPets.service;
+package propets.messaging.service;
 
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import telran.ProPets.dao.PostRepository;
-import telran.ProPets.exceptions.NotFoundException;
-import telran.ProPets.model.Post;
+import propets.messaging.dao.PostRepository;
+import propets.messaging.exceptions.NotFoundException;
+import propets.messaging.model.Post;
 
 @Component
 public class CustomSecurity {

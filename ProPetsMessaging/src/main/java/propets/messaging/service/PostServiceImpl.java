@@ -1,11 +1,8 @@
-package telran.ProPets.service;
+package propets.messaging.service;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -23,15 +20,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import telran.ProPets.configuration.MessagingConfiguration;
-import telran.ProPets.dao.PostRepository;
-import telran.ProPets.dto.PageDto;
-import telran.ProPets.dto.PostDto;
-import telran.ProPets.dto.PostResponseDto;
-import telran.ProPets.exceptions.BadRequestException;
-import telran.ProPets.exceptions.ConflictException;
-import telran.ProPets.exceptions.NotFoundException;
-import telran.ProPets.model.Post;
+import propets.messaging.configuration.MessagingConfiguration;
+import propets.messaging.dao.PostRepository;
+import propets.messaging.dto.PageDto;
+import propets.messaging.dto.PostDto;
+import propets.messaging.dto.PostResponseDto;
+import propets.messaging.exceptions.BadRequestException;
+import propets.messaging.exceptions.ConflictException;
+import propets.messaging.exceptions.NotFoundException;
+import propets.messaging.model.Post;
 
 @Service
 public class PostServiceImpl implements PostService {

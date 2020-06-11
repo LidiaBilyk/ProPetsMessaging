@@ -1,4 +1,4 @@
-package telran.ProPets.security.filter;
+package propets.messaging.security.filter;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -17,9 +17,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriTemplate;
 
-import telran.ProPets.configuration.MessagingConfiguration;
-
-import telran.ProPets.service.CustomSecurity;
+import propets.messaging.configuration.MessagingConfiguration;
+import propets.messaging.service.CustomSecurity;
 
 @Service
 @Order(20)
