@@ -62,7 +62,7 @@ public class PostController {
 		return postService.getPostsForUserData(postId);
 	}
 	
-	@PostMapping("/userdata/{login}")
+	@PostMapping("/userdata/{login:.*}")
 	public Set<PostResponseDto> getPostsForUserData(@PathVariable String login) {
 		return postService.getPostsForUserData(login);
 	}
