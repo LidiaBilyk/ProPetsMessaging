@@ -6,25 +6,23 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
 import propets.messaging.configuration.MessagingConfiguration;
 import propets.messaging.dao.PostRepository;
 import propets.messaging.dto.PageDto;
 import propets.messaging.dto.PostDto;
 import propets.messaging.dto.PostResponseDto;
+import propets.messaging.dto.UserUpdateDto;
 import propets.messaging.exceptions.BadRequestException;
 import propets.messaging.exceptions.ConflictException;
 import propets.messaging.exceptions.NotFoundException;
@@ -47,26 +45,8 @@ public class PostServiceImpl implements PostService {
 				.text(postDto.getText())
 				.images(postDto.getImages())
 				.build();			
-		postRepository.save(post);
-		sendToActivities(post.getId(), post.getUserLogin(), HttpMethod.PUT);
+		postRepository.save(post);		
 		return postToPostResponseDto(post);
-	}
-
-	private void sendToActivities(String id, String userLogin, HttpMethod method) {
-		RestTemplate restTemplate = new RestTemplate();	
-		String activityTemplate = "/activity/";
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("X-ServiceName", messagingConfiguration.getApplicationName());
-		try {
-			RequestEntity<String> restRequest = new RequestEntity<>(headers, method, 			
-					new URI(messagingConfiguration.getActivityUri().concat(userLogin).concat(activityTemplate).concat(id)));
-			ResponseEntity<String>restResponse = restTemplate.exchange(restRequest, String.class);
-		} catch (RestClientException e) {
-			throw new ConflictException();
-		} 
-		catch (URISyntaxException e) {			
-			throw new BadRequestException();
-		}		
 	}
 
 	private PostResponseDto postToPostResponseDto(Post post) {		
@@ -104,8 +84,7 @@ public class PostServiceImpl implements PostService {
 	public PostResponseDto deletePost(String id) {
 		Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException());		
 		PostResponseDto postResponseDto = postToPostResponseDto(post);
-		postRepository.deleteById(id);
-		sendToActivities(post.getId(), post.getUserLogin(), HttpMethod.DELETE);
+		postRepository.deleteById(id);		
 		return postResponseDto;
 	}
 
@@ -147,5 +126,28 @@ public class PostServiceImpl implements PostService {
 		.map(d -> postToPostResponseDto(d))		
 		.collect(Collectors.toSet());			
 		return result;
+	}
+
+	@Override
+	public Set<PostResponseDto> getPostsForUserData(String login) {		
+		return postRepository.findByUserLogin(login).stream().map(p -> postToPostResponseDto(p)).collect(Collectors.toSet());
+	}
+	
+	@Override
+	public Set<Post> updateUserPosts(UserUpdateDto userUpdateDto) {	
+		return postRepository.findByUserLogin(userUpdateDto.getLogin()).stream()
+				.map(p -> updateUser(userUpdateDto, p))
+				.map(p -> postRepository.save(p))
+				.collect(Collectors.toSet());
+	}
+	
+	private Post updateUser(UserUpdateDto userUpdateDto, Post post) { 
+		if (userUpdateDto.getUsername() != null) {
+			post.setUsername(userUpdateDto.getUsername());
+		}
+		if (userUpdateDto.getAvatar() != null) {
+			post.setAvatar(userUpdateDto.getAvatar());
+		}
+		return post;
 	}
 }

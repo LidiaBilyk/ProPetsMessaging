@@ -5,6 +5,8 @@ import java.util.Set;
 import propets.messaging.dto.PageDto;
 import propets.messaging.dto.PostDto;
 import propets.messaging.dto.PostResponseDto;
+import propets.messaging.dto.UserUpdateDto;
+import propets.messaging.model.Post;
 
 
 public interface PostService {
@@ -15,4 +17,6 @@ public interface PostService {
 	PageDto getPosts(Integer itemsOnPage, Integer currentPage);
 	void complainPost(String id);
 	Set<PostResponseDto> getPostsForUserData(Set<String> postId);
+	Set<PostResponseDto> getPostsForUserData(String login);
+	Set<Post> updateUserPosts(UserUpdateDto userUpdateDto);
 }
