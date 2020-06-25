@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import propets.messaging.dto.PageDto;
 import propets.messaging.dto.PostDto;
 import propets.messaging.dto.PostResponseDto;
+import propets.messaging.dto.UserUpdateDto;
+import propets.messaging.model.Post;
 import propets.messaging.service.PostService;
 
 @RestController
@@ -64,5 +65,10 @@ public class PostController {
 	@PostMapping("/userdata/{login}")
 	public Set<PostResponseDto> getPostsForUserData(@PathVariable String login) {
 		return postService.getPostsForUserData(login);
+	}
+	
+	@PutMapping("/updateuser")
+	public Set<Post> updateUserPosts(@RequestBody UserUpdateDto userUpdateDto) {	
+		return postService.updateUserPosts(userUpdateDto);
 	}
 }
