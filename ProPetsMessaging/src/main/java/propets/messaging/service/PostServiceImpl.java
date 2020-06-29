@@ -3,9 +3,7 @@ package propets.messaging.service;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +20,6 @@ import propets.messaging.dao.PostRepository;
 import propets.messaging.dto.PageDto;
 import propets.messaging.dto.PostDto;
 import propets.messaging.dto.PostResponseDto;
-import propets.messaging.dto.UserUpdateDto;
 import propets.messaging.exceptions.BadRequestException;
 import propets.messaging.exceptions.ConflictException;
 import propets.messaging.exceptions.NotFoundException;
@@ -118,36 +115,5 @@ public class PostServiceImpl implements PostService {
 		} catch (URISyntaxException e) {			
 			throw new BadRequestException();
 		}		
-	}
-	@Override
-	public Set<PostResponseDto> getPostsForUserData(Set<String> postId) {
-		Iterable<Post> res = postRepository.findAllById(postId);
-		Set<PostResponseDto> result = StreamSupport.stream(res.spliterator(), false)
-		.map(d -> postToPostResponseDto(d))		
-		.collect(Collectors.toSet());			
-		return result;
-	}
-
-	@Override
-	public Set<PostResponseDto> getPostsForUserData(String login) {		
-		return postRepository.findByUserLogin(login).stream().map(p -> postToPostResponseDto(p)).collect(Collectors.toSet());
-	}
-	
-	@Override
-	public Set<Post> updateUserPosts(UserUpdateDto userUpdateDto) {	
-		return postRepository.findByUserLogin(userUpdateDto.getLogin()).stream()
-				.map(p -> updateUser(userUpdateDto, p))
-				.map(p -> postRepository.save(p))
-				.collect(Collectors.toSet());
-	}
-	
-	private Post updateUser(UserUpdateDto userUpdateDto, Post post) { 
-		if (userUpdateDto.getUsername() != null) {
-			post.setUsername(userUpdateDto.getUsername());
-		}
-		if (userUpdateDto.getAvatar() != null) {
-			post.setAvatar(userUpdateDto.getAvatar());
-		}
-		return post;
 	}
 }
